@@ -12,10 +12,19 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        // Ambil input dari joystick
-        Vector2 moveInput = joystick.input;
-        rb.velocity = moveInput * moveSpeed;
+        if (joystick != null)
+        {
+            // Ambil input dari joystick
+            Vector2 moveInput = joystick.input;
+
+            // Normalisasi supaya diagonal tidak lebih cepat
+            if (moveInput.magnitude > 1)
+                moveInput.Normalize();
+
+            // Gerakkan Rigidbody2D
+            rb.velocity = moveInput * moveSpeed;
+        }
     }
 }
