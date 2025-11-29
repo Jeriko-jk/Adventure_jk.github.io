@@ -14,6 +14,9 @@ public class PlayerHealth : MonoBehaviour
     public float shakeAmount = 8f;
     bool isShaking = false;
 
+    // Respawn
+    public Transform spawnPoint; // posisi respawn
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -25,6 +28,12 @@ public class PlayerHealth : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             TakeDamage(10);
+        }
+
+        // Cek jika darah habis
+        if (currentHealth <= 0)
+        {
+            Respawn();
         }
     }
 
@@ -66,5 +75,16 @@ public class PlayerHealth : MonoBehaviour
 
         healthBar.anchoredPosition = originalPos;
         isShaking = false;
+    }
+
+    void Respawn()
+    {
+        // Reset posisi player
+        if (spawnPoint != null)
+            transform.position = spawnPoint.position;
+
+        // Reset darah
+        currentHealth = maxHealth;
+        UpdateHealthBar();
     }
 }
